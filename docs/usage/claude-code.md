@@ -2,6 +2,8 @@
 
 Install the Frappe Claude Skill Package in Claude Code for terminal-based development.
 
+For OpenCode, Codex, and `skills.sh`, see [Agent Harnesses](agent-harnesses.md).
+
 ## Installation Methods
 
 ### Method 1: Personal Skills (Recommended)
@@ -10,21 +12,23 @@ Personal skills are available across all your projects.
 
 ```bash
 # Clone the repository
-git clone https://github.com/OpenAEC-Foundation/Frappe_Claude_Skill_Package.git
+git clone https://github.com/Impertio-Studio/Frappe_Claude_Skill_Package.git
 
-# Copy skills to personal directory
-cp -r Frappe_Claude_Skill_Package/skills/source/* ~/.claude/skills/
+# Copy skill folders to personal directory
+mkdir -p ~/.claude/skills
+cp -R Frappe_Claude_Skill_Package/skills/source/*/* ~/.claude/skills/
 
 # Verify installation
-ls ~/.claude/skills/
+ls ~/.claude/skills/frappe-*/SKILL.md
 ```
 
-Expected output:
-```
-syntax-client-scripts/
-syntax-server-scripts/
-syntax-controllers/
-... (28 skill folders)
+Expected output includes:
+
+```text
+~/.claude/skills/frappe-syntax-serverscripts/SKILL.md
+~/.claude/skills/frappe-core-database/SKILL.md
+~/.claude/skills/frappe-impl-serverscripts/SKILL.md
+... (61 skill folders)
 ```
 
 ### Method 2: Project Skills (Team Sharing)
@@ -35,12 +39,12 @@ Project skills are committed to version control and shared with your team.
 # In your ERPNext project directory
 mkdir -p .claude/skills
 
-# Copy skills
-cp -r /path/to/Frappe_Claude_Skill_Package/skills/source/* .claude/skills/
+# Copy skill folders
+cp -R /path/to/Frappe_Claude_Skill_Package/skills/source/*/* .claude/skills/
 
 # Commit to version control
 git add .claude/skills
-git commit -m "Add ERPNext development skills"
+git commit -m "Add Frappe development skills"
 ```
 
 ### Method 3: Selective Installation
@@ -48,30 +52,31 @@ git commit -m "Add ERPNext development skills"
 Install only the skills you need:
 
 ```bash
-# Example: Install only Server Script related skills
-cp -r skills/source/syntax-server-scripts ~/.claude/skills/
-cp -r skills/source/impl-server-scripts ~/.claude/skills/
-cp -r skills/source/errors-server ~/.claude/skills/
+# Example: install only Server Script related skills
+cp -R skills/source/syntax/frappe-syntax-serverscripts ~/.claude/skills/
+cp -R skills/source/impl/frappe-impl-serverscripts ~/.claude/skills/
+cp -R skills/source/errors/frappe-errors-serverscripts ~/.claude/skills/
 ```
 
 ## Verification
 
-Start Claude Code and verify skills are loaded:
+Start Claude Code:
 
 ```bash
 claude
 ```
 
 Then ask:
-```
-What ERPNext skills do you have access to?
+
+```text
+What Frappe skills do you have access to?
 ```
 
-Claude should list all installed skills with their descriptions.
+Claude should list installed `frappe-*` skills with descriptions.
 
 ## Skill Priority
 
-If the same skill exists in multiple locations, priority is (highest first):
+If the same skill exists in multiple locations, priority is usually:
 
 1. **Managed** - Organization admin settings
 2. **Personal** - `~/.claude/skills/`
@@ -83,7 +88,7 @@ If the same skill exists in multiple locations, priority is (highest first):
 Create a `CLAUDE.md` in your project root for project-specific context:
 
 ```markdown
-# ERPNext Project Configuration
+# Frappe Project Configuration
 
 ## Framework Version
 This project uses Frappe/ERPNext v15.
@@ -94,23 +99,21 @@ This project uses Frappe/ERPNext v15.
 - Always handle permissions explicitly
 
 ## Custom Apps
-- `custom_app/` - Our custom ERPNext app
+- `custom_app/` - Our custom Frappe app
 ```
 
 ## Troubleshooting
 
 ### Skills not appearing
 
-1. Check YAML syntax in SKILL.md files:
+1. Check the copy depth. `SKILL.md` must be directly inside each skill folder:
    ```bash
-   head -10 ~/.claude/skills/syntax-server-scripts/SKILL.md
+   ls ~/.claude/skills/frappe-syntax-serverscripts/SKILL.md
    ```
-   
 2. Run Claude with debug mode:
    ```bash
    claude --debug
    ```
-
 3. Verify file permissions:
    ```bash
    ls -la ~/.claude/skills/
@@ -119,18 +122,21 @@ This project uses Frappe/ERPNext v15.
 ### Wrong skill triggered
 
 Make your request more specific. Instead of:
-```
+
+```text
 Help me with a script
 ```
 
 Use:
-```
+
+```text
 Help me create a Server Script for Sales Order validation
 ```
 
 ### Scripts not executing
 
 Ensure execute permissions:
+
 ```bash
 chmod +x ~/.claude/skills/*/scripts/*.py 2>/dev/null
 ```
@@ -140,15 +146,17 @@ chmod +x ~/.claude/skills/*/scripts/*.py 2>/dev/null
 ```bash
 cd Frappe_Claude_Skill_Package
 git pull
-cp -r skills/source/* ~/.claude/skills/
+cp -R skills/source/*/* ~/.claude/skills/
 ```
+
+Re-copying can overwrite local edits in installed skill folders. If you edit installed copies, back them up first.
 
 ## Monorepo Support
 
-Claude Code automatically discovers skills in nested directories. If you're editing files in `packages/erpnext-custom/`, Claude also looks for skills in `packages/erpnext-custom/.claude/skills/`.
+Claude Code can discover project skills in nested `.claude/skills/` directories. Keep each skill as `<name>/SKILL.md` directly under that directory.
 
 ## Next Steps
 
 - Read [USAGE.md](../../USAGE.md) for skill overview
-- Check individual skill documentation in `skills/source/*/SKILL.md`
+- Check individual skill documentation in `skills/source/*/*/SKILL.md`
 - Review [LESSONS.md](../../LESSONS.md) for common pitfalls
