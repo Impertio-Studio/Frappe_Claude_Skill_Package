@@ -1,13 +1,13 @@
 {
-  "name": "@openaec/frappe-claude-skill-package",
+  "name": "@impertio-studio/frappe-claude-skill-package",
   "version": "3.2.0",
   "description": "61 deterministic Claude AI skills for Frappe Framework & ERPNext v14-v16 development and operations",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/OpenAEC-Foundation/Frappe_Claude_Skill_Package"
+    "url": "https://github.com/Impertio-Studio/Frappe_Claude_Skill_Package"
   },
-  "keywords": ["agent-skills", "agentskills", "claude-skills", "frappe", "erpnext", "python", "javascript"],
+  "keywords": ["agent-skills", "agentskills", "claude-skills", "frappe", "erpnext", "python", "javascript", "opencode", "codex", "openai-codex", "skills.sh", "agent-harness", "multi-agent"],
   "agents": {
     "skills": [
       { "name": "frappe-agent-architect", "path": "./skills/source/agents/frappe-agent-architect" },

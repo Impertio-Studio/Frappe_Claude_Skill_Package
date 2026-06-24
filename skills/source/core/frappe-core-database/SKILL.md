@@ -493,9 +493,7 @@ For complex queries (joins, aggregations, subqueries, cross-DB compatibility), s
 - **frappe.db.sql** — Very complex SQL not expressible in qb (ALWAYS parameterized)
 
 ## Reference Files
-
-- **[methods-reference.md](references/methods-reference.md)** — Complete API signatures for all database and document methods
+- **[methods-reference.md](references/methods-reference.md)** — Complete API signatures for database and document methods
 - **[query-patterns.md](references/query-patterns.md)** — Query Builder patterns, subqueries, ImportMapper, custom functions
 - **[caching-patterns.md](references/caching-patterns.md)** — Redis cache, @redis_cache, hash operations, invalidation
-- **[examples.md](references/examples.md)** — Real-world patterns: CRUD, reports, batch processing, transactions
-- **[anti-patterns.md](references/anti-patterns.md)** — SQL injection, N+1, commit mistakes, and 10 more anti-patterns
+- **[examples.md](references/examples.md)** / **[anti-patterns.md](references/anti-patterns.md)** — CRUD, reports, batch processing, SQL injection, N+1, commit mistakes
