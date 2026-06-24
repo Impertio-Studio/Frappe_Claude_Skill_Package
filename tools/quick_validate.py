@@ -6,11 +6,18 @@ checkout with `python3 tools/quick_validate.py skills/source --all`.
 """
 from __future__ import annotations
 
+import json
 import re
 import sys
 from pathlib import Path
 
 MAX_LINES = 500
+REQUIRED_KEYWORDS = {"agent-skills", "opencode", "codex", "skills.sh"}
+DUPLICATE_SKILL_GLOBS = [
+    ".agents/skills/*/SKILL.md",
+    ".opencode/skills/*/SKILL.md",
+    ".claude/skills/*/SKILL.md",
+]
 
 
 def parse_frontmatter(content: str) -> tuple[dict, str | None]:
@@ -68,6 +75,11 @@ def parse_frontmatter(content: str) -> tuple[dict, str | None]:
         i += 1
 
     return data, None
+
+
+def skill_frontmatter_name(skill_dir: Path) -> str:
+    frontmatter, _ = parse_frontmatter((skill_dir / "SKILL.md").read_text(encoding="utf-8"))
+    return str(frontmatter.get("name", ""))
 
 
 def validate_skill(skill_path: str | Path):
@@ -148,6 +160,76 @@ def discover_skills(root: str | Path) -> list[Path]:
     return sorted(p.parent for p in Path(root).glob("*/*/SKILL.md"))
 
 
+def find_repo_root(path: Path) -> Path:
+    path = path.resolve()
+    if path.name == "source" and path.parent.name == "skills":
+        return path.parent.parent
+    for candidate in [path, *path.parents]:
+        if (candidate / "package.json").exists() or (candidate / ".git").exists():
+            return candidate
+    return path
+
+
+def validate_package_manifest(repo_root: Path, skills_root: Path, skill_dirs: list[Path]) -> list[str]:
+    package_json = repo_root / "package.json"
+    if not package_json.exists():
+        return []
+
+    errors: list[str] = []
+    try:
+        package = json.loads(package_json.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        return [f"package.json is invalid JSON: {exc}"]
+
+    manifest = package.get("agents", {}).get("skills")
+    if not isinstance(manifest, list):
+        errors.append("package.json agents.skills must be a list")
+        return errors
+
+    discovered = {p.resolve().relative_to(repo_root).as_posix(): p for p in skill_dirs}
+    manifest_paths: dict[str, str] = {}
+    for i, item in enumerate(manifest, start=1):
+        if not isinstance(item, dict) or not item.get("name") or not item.get("path"):
+            errors.append(f"package.json agents.skills[{i}] must have name and path")
+            continue
+        name = str(item["name"])
+        rel_path = str(item["path"]).removeprefix("./")
+        manifest_paths[rel_path] = name
+        skill_dir = repo_root / rel_path
+        if not (skill_dir / "SKILL.md").exists():
+            errors.append(f"package.json skill path missing SKILL.md: {rel_path}")
+            continue
+        if skill_dir.name != name:
+            errors.append(f"package.json skill name '{name}' must match folder '{skill_dir.name}'")
+        fm_name = skill_frontmatter_name(skill_dir)
+        if fm_name and fm_name != name:
+            errors.append(f"package.json skill name '{name}' must match SKILL.md name '{fm_name}'")
+
+    missing = sorted(set(discovered) - set(manifest_paths))
+    extra = sorted(set(manifest_paths) - set(discovered))
+    if missing:
+        errors.append("package.json missing skills: " + ", ".join(missing[:5]) + ("..." if len(missing) > 5 else ""))
+    if extra:
+        errors.append("package.json has non-discovered skills: " + ", ".join(extra[:5]) + ("..." if len(extra) > 5 else ""))
+    if len(manifest) != len(skill_dirs):
+        errors.append(f"package.json agents.skills has {len(manifest)} entries; discovered {len(skill_dirs)} skills")
+
+    description = str(package.get("description", ""))
+    if re.search(r"\d+\s+.*skills", description, re.I) and str(len(skill_dirs)) not in description:
+        errors.append(f"package.json description must include discovered skill count {len(skill_dirs)}")
+
+    keywords = set(package.get("keywords", []))
+    missing_keywords = sorted(REQUIRED_KEYWORDS - keywords)
+    if missing_keywords:
+        errors.append("package.json missing keywords: " + ", ".join(missing_keywords))
+
+    for pattern in DUPLICATE_SKILL_GLOBS:
+        for duplicate in repo_root.glob(pattern):
+            errors.append(f"duplicate harness skill tree found: {duplicate.relative_to(repo_root)}")
+
+    return errors
+
+
 def print_result(path: Path, errors: list[str], warnings: list[str]) -> None:
     print(f"Validating: {path}")
     if warnings:
@@ -173,7 +255,8 @@ def main() -> int:
         print(f"Error: {path} is not a directory")
         return 1
 
-    if len(sys.argv) == 3:
+    all_mode = len(sys.argv) == 3
+    if all_mode:
         skill_dirs = discover_skills(path)
         if not skill_dirs:
             print(f"Error: no skills found under {path} (expected */*/SKILL.md)")
@@ -191,6 +274,19 @@ def main() -> int:
         if not errors:
             passed += 1
         print_result(skill_dir, errors, warnings)
+
+    if all_mode:
+        repo_root = find_repo_root(path)
+        manifest_errors = validate_package_manifest(repo_root, path.resolve(), skill_dirs)
+        if manifest_errors:
+            total_errors += len(manifest_errors)
+            print("Validating: package.json / harness layout")
+            print("  ❌ ERRORS:")
+            for error in manifest_errors:
+                print(f"     - {error}")
+        else:
+            print("Validating: package.json / harness layout")
+            print("  ✅ Manifest and harness layout are valid")
 
     print("-" * 50)
     print(f"Validated: {len(skill_dirs)} skill(s); passed: {passed}; failed: {len(skill_dirs) - passed}; warnings: {total_warnings}; errors: {total_errors}")

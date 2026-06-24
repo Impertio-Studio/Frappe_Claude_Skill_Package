@@ -56,26 +56,36 @@ This package encodes **61 hard-won lessons** like this into deterministic skills
 
 ## 🚀 Installation
 
-### Claude Code (Recommended)
+### OpenCode, Codex, and skills.sh
+
+See [`docs/usage/agent-harnesses.md`](docs/usage/agent-harnesses.md) for verified OpenCode, Codex, Claude Code, and `skills.sh` install paths.
+
+```bash
+# Safe discovery command; lists all 61 skills without installing
+npx skills@1.5.13 add Impertio-Studio/Frappe_Claude_Skill_Package --list
+```
+
+### Claude Code
 
 ```bash
 # Clone the repository
-git clone https://github.com/OpenAEC-Foundation/Frappe_Claude_Skill_Package.git
+git clone https://github.com/Impertio-Studio/Frappe_Claude_Skill_Package.git
 
-# Copy all 61 skills to your Claude Code skills directory
-cp -r Frappe_Claude_Skill_Package/skills/source/* ~/.claude/skills/
+# Copy all 61 skill folders to your Claude Code skills directory
+mkdir -p ~/.claude/skills
+cp -R Frappe_Claude_Skill_Package/skills/source/*/* ~/.claude/skills/
 ```
 
 ### Claude.ai Web/Desktop
 
 1. Download skill folders from [`skills/source/`](skills/source/)
-2. ZIP each folder individually
+2. ZIP each skill folder individually, with `SKILL.md` at the folder root
 3. Upload via **Settings → Capabilities → Skills**
 
 ### Claude.ai Projects
 
 1. Create a new project
-2. Upload `SKILL.md` files to the **Knowledge** section
+2. Upload relevant `SKILL.md` files to the **Knowledge** section
 
 ---
 
@@ -111,7 +121,7 @@ This package also serves as a **template** for building Claude skill packages in
 
 See [`WAY_OF_WORK.md`](WAY_OF_WORK.md) for the methodology we used to build these skills.
 
-**Found an issue?** [Open an issue](https://github.com/OpenAEC-Foundation/Frappe_Claude_Skill_Package/issues/new)
+**Found an issue?** [Open an issue](https://github.com/Impertio-Studio/Frappe_Claude_Skill_Package/issues/new)
 **Want to contribute?** PRs welcome!
 
 ---
@@ -145,5 +155,5 @@ MIT — See [LICENSE.md](LICENSE.md) for details.
 </p>
 
 <p align="center">
-  <a href="https://github.com/OpenAEC-Foundation/Frappe_Claude_Skill_Package/stargazers">⭐ Star this repo if it helps you!</a>
+  <a href="https://github.com/Impertio-Studio/Frappe_Claude_Skill_Package/stargazers">⭐ Star this repo if it helps you!</a>
 </p>

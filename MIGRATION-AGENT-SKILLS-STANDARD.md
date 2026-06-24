@@ -72,15 +72,16 @@ Voeg aan INSTALL.md of USAGE.md de volgende sectie toe:
 ```markdown
 ### Globale installatie (Claude Code CLI)
 
-Kopieer alle skills naar je globale skills directory zodat ze in elk project beschikbaar zijn:
+Kopieer alle skill folders naar je globale skills directory zodat ze in elk project beschikbaar zijn:
 
-cp -r skills/source/* ~/.claude/skills/
+mkdir -p ~/.claude/skills
+cp -R skills/source/*/* ~/.claude/skills/
 
 De skills gebruiken progressive disclosure: bij startup laadt Claude alleen
 de name en description (~100 tokens per skill). De volledige instructies
 worden pas geladen wanneer een skill relevant is voor je vraag.
 
-28 skills × ~100 tokens = ~2.800 tokens startup-overhead. Dit is verwaarloosbaar
+61 skills × ~100 tokens = ~6.100 tokens startup-overhead. Dit is verwaarloosbaar
 op een context window van 200k tokens.
 ```
 
