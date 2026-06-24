@@ -33,6 +33,7 @@ Thumbs.db
 .env.local
 PROMPTS.md
 .claude/
+.hermes/
 *.code-workspace
 
 # Node (if any JS tooling)

@@ -1,13 +1,11 @@
 ---
 name: frappe-ops-website-deploy
 description: >
-  Deploy HTML/CSS websites to ERPNext/Frappe (v15/v16) as Web Pages via the REST API.
-  Use this skill whenever a user wants to host a website on ERPNext, deploy HTML mockups
-  to Frappe, create Web Pages programmatically, configure Website Settings, or integrate
-  Frappe's Discussion system as a forum. Also use when the user mentions "website on ERPNext",
-  "Web Page API", "Page Builder", "Web Template", or wants to serve custom HTML from Frappe.
-  Covers: Web Pages with Page Builder, custom Web Templates, Website Settings (navbar, footer),
-  CSS management, Frappe Discussion integration, and deployment scripting.
+  Use when deploying HTML/CSS websites to ERPNext/Frappe (v15/v16) as Web Pages via the REST API.
+  Prevents broken Web Page rendering, wrong Page Builder usage, and missing Website Settings.
+  Covers Web Pages with Page Builder, custom Web Templates, Website Settings, CSS management,
+  Frappe Discussion integration, and deployment scripting. Keywords: website on ERPNext,
+  Web Page API, Page Builder, Web Template, custom HTML, Frappe website deploy.
 license: MIT
 compatibility: "Claude Code, Claude.ai Projects, Claude API. Frappe v15-v16, ERPNext v15-v16."
 metadata:

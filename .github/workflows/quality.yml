@@ -1,5 +1,13 @@
 name: Skill Quality
 on: [push, pull_request]
 jobs:
+  local-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: python3 tools/quick_validate.py skills/source --all
   quality:
     uses: OpenAEC-Foundation/Skill-Package-Workflow-Template/.github/workflows/skill-quality.yml@main

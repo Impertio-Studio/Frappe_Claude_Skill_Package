@@ -12,6 +12,7 @@
 | Source | URL | Coverage | Last Verified |
 |--------|-----|----------|---------------|
 | Frappe Framework Docs | https://docs.frappe.io/framework | Core framework API, hooks, controllers | 2026-01-17 |
+| Frappe Framework Introduction | https://docs.frappe.io/framework/user/en/introduction | Framework overview, metadata-as-data model, Desk, permissions, REST API | 2026-06-24 |
 | Database API | https://docs.frappe.io/framework/user/en/api/database | frappe.db methods, query builder | 2026-01-17 |
 | Document API | https://docs.frappe.io/framework/user/en/api/document | frappe.get_doc, document lifecycle | 2026-01-17 |
 | Form API | https://docs.frappe.io/framework/user/en/api/form | Client-side form manipulation | 2026-01-17 |
@@ -55,6 +56,11 @@
 | Source | URL | Purpose | Last Verified |
 |--------|-----|---------|---------------|
 | Frappe Source | https://github.com/frappe/frappe | Source code verification | 2026-01-17 |
+| Frappe Docker | https://github.com/frappe/frappe_docker | Official Docker/container setup repository for Frappe apps | 2026-06-24 |
+| Frappe Docker Docs | https://frappe.github.io/frappe_docker/ | Published Docker setup documentation | 2026-06-24 |
+| Frappe Docker Getting Started | https://frappe.github.io/frappe_docker/getting-started.html | Docker architecture, repo layout, services, images, overrides | 2026-06-24 |
+| Frappe Docker Single Compose Setup | https://frappe.github.io/frappe_docker/01-getting-started/04-single-compose-setup.html | `pwd.yml` demo setup, services, volumes, adaptation notes | 2026-06-24 |
+| Frappe Docker Development | https://frappe.github.io/frappe_docker/05-development/01-development.html | Devcontainer and development bench workflow | 2026-06-24 |
 | ERPNext Releases | https://github.com/frappe/erpnext/releases | Version change tracking | 2026-01-17 |
 | Frappe Permissions | https://github.com/frappe/frappe/blob/develop/frappe/permissions.py | Permission internals | 2026-01-17 |
 | Document Model | https://github.com/frappe/frappe/blob/develop/frappe/model/document.py | Document lifecycle | 2026-01-17 |

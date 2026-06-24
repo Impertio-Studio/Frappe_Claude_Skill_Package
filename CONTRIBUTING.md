@@ -72,17 +72,26 @@ date = frappe.utils.nowdate()
 
 Before submitting:
 
-1. Validate SKILL.md format:
+1. Validate one skill:
    ```bash
-   python tools/quick_validate.py skills/source/your-skill/
+   python3 tools/quick_validate.py skills/source/category/your-skill/
    ```
 
-2. Check line count:
+2. Validate all skills:
    ```bash
-   wc -l skills/source/your-skill/SKILL.md  # Must be <500
+   python3 tools/quick_validate.py skills/source --all
    ```
 
-3. Verify all code examples work in ERPNext
+3. Keep every `SKILL.md` at maximum 500 lines, measured with:
+   ```bash
+   python3 - <<'PY'
+   from pathlib import Path
+   p = Path('skills/source/category/your-skill/SKILL.md')
+   print(len(p.read_text(encoding='utf-8').splitlines()))
+   PY
+   ```
+
+4. Verify all code examples work in ERPNext
 
 ## Commit Message Format
 
