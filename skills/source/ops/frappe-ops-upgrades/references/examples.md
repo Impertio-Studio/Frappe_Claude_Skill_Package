@@ -45,7 +45,7 @@ grep -r "frappe.compare(" . --include="*.py"
 
 # 4. Commit custom app fixes
 cd apps/custom_app
-git add -A && git commit -m "fix: migrate deprecated APIs for v15 compatibility"
+git add -A && git commit -m "migrate deprecated APIs for v15 compatibility"   # in your repository's commit format
 
 # 5. Switch Frappe/ERPNext to v15
 bench switch-to-branch version-15 frappe erpnext
