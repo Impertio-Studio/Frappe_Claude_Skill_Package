@@ -39,7 +39,7 @@ cd apps/my_inventory_app
 git init
 echo "__pycache__/\n*.pyc\nnode_modules/\n.eggs/" > .gitignore
 git add -A
-git commit -m "feat: initial app scaffold"
+git commit -m "initial app scaffold"   # in your repository's commit format
 ```
 
 ### Step 7 — Declare Dependencies

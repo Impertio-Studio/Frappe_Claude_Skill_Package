@@ -105,7 +105,7 @@ bench build --app my_custom_app
 bench --site mysite run-tests --app my_custom_app
 
 # 5. Commit
-git -C apps/my_custom_app add -A && git -C apps/my_custom_app commit -m "feat: add feature"
+git -C apps/my_custom_app add -A && git -C apps/my_custom_app commit -m "add feature"   # in your repository's commit format
 ```
 
 ALWAYS run `bench migrate` after modifying DocType JSON files.
